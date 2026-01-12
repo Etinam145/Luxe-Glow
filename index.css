@@ -1,0 +1,24 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #FDFCF8;
+}
+::-webkit-scrollbar-thumb {
+  background: #E8C3C8;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #D4AF37;
+}
+
+.glass-nav {
+  background: rgba(253, 252, 248, 0.85);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(232, 195, 200, 0.2);
+}

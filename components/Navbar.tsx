@@ -19,8 +19,7 @@ const Navbar: React.FC = () => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 50);
 
-      // Determine active section
-      const scrollPosition = window.scrollY + 150; // Offset for trigger point
+      const scrollPosition = window.scrollY + 150;
       
       let currentSection = '';
       for (const link of navLinks) {
@@ -38,7 +37,7 @@ const Navbar: React.FC = () => {
     };
 
     window.addEventListener('scroll', handleScroll);
-    handleScroll(); // Check on mount
+    handleScroll();
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
@@ -55,7 +54,7 @@ const Navbar: React.FC = () => {
     const element = document.getElementById(targetId);
     
     if (element) {
-      const offset = 100; // Navbar height + buffer
+      const offset = 100;
       const elementPosition = element.getBoundingClientRect().top + window.scrollY;
       const offsetPosition = elementPosition - offset;
 
@@ -115,8 +114,9 @@ const Navbar: React.FC = () => {
 
           {/* Mobile Toggle */}
           <button
-            className="md:hidden text-luxury-charcoal"
+            className="md:hidden text-luxury-charcoal p-2 -mr-2"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            aria-label="Toggle Menu"
           >
             {isMobileMenuOpen ? <X size={28} /> : <Menu size={28} />}
           </button>
@@ -133,28 +133,43 @@ const Navbar: React.FC = () => {
             transition={{ type: "tween", duration: 0.3 }}
             className="fixed inset-0 z-40 bg-luxury-ivory flex flex-col items-center justify-center space-y-8 md:hidden"
           >
+            {/* Mobile Menu Header with Logo acting as Home/Top link */}
+             <div className="absolute top-6 left-6">
+                <a 
+                  href="#" 
+                  onClick={(e) => scrollToSection(e, '#')}
+                  className="font-serif text-2xl font-bold tracking-tighter text-luxury-charcoal flex items-center gap-2"
+                >
+                  <span className="text-luxury-gold">✦</span> LUXE GLOW
+                </a>
+             </div>
+
             <button 
               onClick={() => setIsMobileMenuOpen(false)}
-              className="absolute top-6 right-6 text-luxury-charcoal"
+              className="absolute top-6 right-6 text-luxury-charcoal p-2 -mr-2"
+              aria-label="Close Menu"
             >
               <X size={28} />
             </button>
 
-            {navLinks.map((link) => (
-              <a
-                key={link.name}
-                href={link.href}
-                className={`font-serif text-3xl transition-colors ${
-                  activeSection === link.href.substring(1) 
-                    ? 'text-luxury-gold' 
-                    : 'text-luxury-charcoal hover:text-luxury-gold'
-                }`}
-                onClick={(e) => scrollToSection(e, link.href)}
-              >
-                {link.name}
-              </a>
-            ))}
-            <Button onClick={(e) => scrollToSection(e, '#booking')}>
+            <div className="flex flex-col items-center space-y-8">
+              {navLinks.map((link) => (
+                <a
+                  key={link.name}
+                  href={link.href}
+                  className={`font-serif text-3xl transition-colors ${
+                    activeSection === link.href.substring(1) 
+                      ? 'text-luxury-gold' 
+                      : 'text-luxury-charcoal hover:text-luxury-gold'
+                  }`}
+                  onClick={(e) => scrollToSection(e, link.href)}
+                >
+                  {link.name}
+                </a>
+              ))}
+            </div>
+
+            <Button onClick={(e) => scrollToSection(e, '#booking')} className="mt-8">
               Book Your Appointment
             </Button>
           </motion.div>
