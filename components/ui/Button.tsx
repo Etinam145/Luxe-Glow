@@ -1,4 +1,3 @@
-import React from 'react';
 import { motion } from 'framer-motion';
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
@@ -8,15 +7,24 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   className?: string;
 }
 
-const Button: React.FC<ButtonProps> = ({ 
-  variant = 'primary', 
-  size = 'md', 
-  children, 
+const Button: React.FC<ButtonProps> = ({
+  variant = 'primary',
+  size = 'md',
+  children,
   className = '',
-  ...props 
+  // Separate Framer Motion gesture props to avoid type conflicts with native onDrag etc.
+  onDrag,
+  onDragStart,
+  onDragEnd,
+  onDragCapture,
+  onDragEnter,
+  onDragExit,
+  onDragLeave,
+  onDragOver,
+  ...restProps // Everything else (including native onClick, disabled, etc.)
 }) => {
   const baseStyles = "inline-flex items-center justify-center transition-all duration-300 font-medium tracking-wide font-sans rounded-none";
-  
+
   const variants = {
     primary: "bg-luxury-gold text-white hover:bg-white hover:text-luxury-gold border border-luxury-gold shadow-lg shadow-luxury-gold/20",
     outline: "bg-transparent border border-luxury-charcoal text-luxury-charcoal hover:bg-luxury-charcoal hover:text-white",
@@ -34,7 +42,11 @@ const Button: React.FC<ButtonProps> = ({
       whileHover={{ scale: 1.02 }}
       whileTap={{ scale: 0.98 }}
       className={`${baseStyles} ${variants[variant]} ${sizes[size]} ${className}`}
-      {...props}
+      // Only pass Framer gesture handlers if you actually use them (optional)
+      // onDrag={onDrag}
+      // onDragStart={onDragStart}
+      // etc.
+      {...restProps} // Safe spread – no conflicting onDrag
     >
       {children}
     </motion.button>
